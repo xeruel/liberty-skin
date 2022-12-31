@@ -325,9 +325,15 @@ class LibertyTemplate extends BaseTemplate {
 					title="<?php echo Linker::titleAttrib( 'pt-logout', 'withaccess' ); ?>">
 					<span class="fa fa-sign-out"></span></a>
 			<?php } else { ?>
-				<a href="#" class="none-outline" data-toggle="modal" data-target="#login-modal">
+				<!-- use this to use Login model function -->
+				<!-- <a href="#" class="none-outline" data-toggle="modal" data-target="#login-modal">
 					<span class="fa fa-sign-in"></span>
-				</a>
+				</a> -->
+				<!-- use this to use Special:UserLogin -->
+				<?php echo $linkRenderer->makeKnownLink(
+					SpecialPage::getTitlefor( 'Userlogin' ),
+					new HtmlArmor( '<span class="fa fa-sign-in"></span>' )
+				); ?>
 			<?php } ?>
 		</div>
 	<?php
@@ -545,12 +551,13 @@ class LibertyTemplate extends BaseTemplate {
 							[ 'action' => 'history' ]
 						);
 					}
-					if ( $action == 'view' ) { ?>
+					/* uncomment below to use share button */
+					/* if ( $action == 'view' ) { ?>
 						<button type="button" class="btn btn-secondary tools-btn tools-share">
 							<i class="far fa-share-square"></i>
 							<?php echo $skin->msg( 'liberty-share' )->escaped() ?>
 						</button>
-					<?php } ?>
+					<?php } */ ?>
 					<?php
 					// @codingStandardsIgnoreStart 
 					?>
