@@ -275,7 +275,10 @@ class SkinLiberty extends SkinTemplate {
 		if ( $LibertyUserDarkSetting === 'dark' ) {
 			$out->addInlineStyle( $LibertyDarkCss );
 		} elseif ( $LibertyUserDarkSetting === null ) {
-			$out->addInlineStyle( "@media (prefers-color-scheme: dark) { $LibertyDarkCss }" );
+			// use this to fix to light mode.
+			$out->addInlineStyle($LibertyCss);
+			// use this to toggle light/dark mode by browser settings.
+			//$out->addInlineStyle( "@media (prefers-color-scheme: dark) { $LibertyDarkCss }" );
 		}
 
 		// @codingStandardsIgnoreEnd
