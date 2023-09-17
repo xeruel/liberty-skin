@@ -64,9 +64,9 @@ class SkinLiberty extends SkinTemplate {
 		}
 
 		/* IOS 기기 및 모바일 크롬에서의 웹앱 옵션 켜기 및 상단바 투명화 */
-		$out->addMeta( 'apple-mobile-web-app-capable', 'Yes' );
-		$out->addMeta( 'apple-mobile-web-app-status-bar-style', 'black-translucent' );
-		$out->addMeta( 'mobile-web-app-capable', 'Yes' );
+		/* $out->addMeta( 'apple-mobile-web-app-capable', 'Yes' );
+		$out->addMeta( 'apple-mobile-web-app-status-bar-style', 'default' );
+		$out->addMeta( 'mobile-web-app-capable', 'Yes' ); */
 
 		/* 모바일에서의 테마 컬러 적용 */
 		// 크롬, 파이어폭스 OS, 오페라
