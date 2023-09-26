@@ -306,7 +306,7 @@ class SkinLiberty extends SkinTemplate {
 		$out->addHeadItem(
 			'webfonts',
 			// @codingStandardsIgnoreLine
-			'<link href="https://fonts.googleapis.com/css?family=Dokdo|Gaegu|Nanum+Gothic|Nanum+Gothic+Coding|Nanum+Myeongjo|Noto+Serif+KR|Noto+Sans+KR&display=swap&subset=korean" rel="stylesheet">'
+			'<link href="https://fonts.googleapis.com/css?family=Dokdo|Gaegu:n,b|Nanum+Gothic:n,b|Nanum+Gothic+Coding:n,b|Nanum+Myeongjo:n,b|Noto+Serif+KR:n,b|Noto+Sans+KR:n,b&display=swap&subset=korean" rel="stylesheet">'
 		);
 
 		$out->addHeadItem(
