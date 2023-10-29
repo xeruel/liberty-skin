@@ -564,6 +564,7 @@ class LibertyTemplate extends BaseTemplate {
 						<span class="caret"></span>
 					</button>
 					<?php } */ ?>
+					<?php
 					// @codingStandardsIgnoreEnd
 					?>
 					<div class="dropdown-menu dropdown-menu-right" role="menu">
