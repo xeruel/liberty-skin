@@ -64,9 +64,9 @@ class SkinLiberty extends SkinTemplate {
 		}
 
 		/* IOS 기기 및 모바일 크롬에서의 웹앱 옵션 켜기 및 상단바 투명화 */
-		$out->addMeta( 'apple-mobile-web-app-capable', 'Yes' );
-		$out->addMeta( 'apple-mobile-web-app-status-bar-style', 'black-translucent' );
-		$out->addMeta( 'mobile-web-app-capable', 'Yes' );
+		/* $out->addMeta( 'apple-mobile-web-app-capable', 'Yes' );
+		$out->addMeta( 'apple-mobile-web-app-status-bar-style', 'default' );
+		$out->addMeta( 'mobile-web-app-capable', 'Yes' ); */
 
 		/* 모바일에서의 테마 컬러 적용 */
 		// 크롬, 파이어폭스 OS, 오페라
@@ -275,7 +275,10 @@ class SkinLiberty extends SkinTemplate {
 		if ( $LibertyUserDarkSetting === 'dark' ) {
 			$out->addInlineStyle( $LibertyDarkCss );
 		} elseif ( $LibertyUserDarkSetting === null ) {
-			$out->addInlineStyle( "@media (prefers-color-scheme: dark) { $LibertyDarkCss }" );
+			// use this to fix to light mode.
+			$out->addInlineStyle($LibertyCss);
+			// use this to toggle light/dark mode by browser settings.
+			//$out->addInlineStyle( "@media (prefers-color-scheme: dark) { $LibertyDarkCss }" );
 		}
 
 		// @codingStandardsIgnoreEnd
@@ -303,7 +306,7 @@ class SkinLiberty extends SkinTemplate {
 		$out->addHeadItem(
 			'webfonts',
 			// @codingStandardsIgnoreLine
-			'<link href="https://fonts.googleapis.com/css?family=Dokdo|Gaegu|Nanum+Gothic|Nanum+Gothic+Coding|Nanum+Myeongjo|Noto+Serif+KR|Noto+Sans+KR&display=swap&subset=korean" rel="stylesheet">'
+			'<link href="https://fonts.googleapis.com/css?family=Dokdo|Gaegu:n,b|Nanum+Gothic:n,b|Nanum+Gothic+Coding:n,b|Nanum+Myeongjo:n,b|Noto+Serif+KR:n,600|Noto+Sans+KR:n,600&display=swap&subset=korean" rel="stylesheet">'
 		);
 
 		$out->addHeadItem(

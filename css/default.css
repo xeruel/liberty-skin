@@ -785,22 +785,6 @@ caption {
 }
 /* Bootstrap Custom End */
 
-/* AdSense */
-ins.adsbygoogle {
-	display: block;
-	width: 100%;
-	height: 90px;
-}
-
-.header-ads > ins {
-	min-width: 20rem;
-}
-
-.right-ads > ins {
-	min-width: 15rem;
-}
-/* AdSense End */
-
 /* Echo */
 #pt-notifications-alert,
 #pt-notifications-notice {
