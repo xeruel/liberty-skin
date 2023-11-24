@@ -551,10 +551,10 @@ class LibertyTemplate extends BaseTemplate {
         /* uncomment below to use share button */
 				if ( $action == 'view' ) { /*?>
 
-						 <button type="button" class="btn btn-secondary tools-btn tools-share">
+						<button type="button" class="btn btn-secondary tools-btn tools-share">
 							<i class="far fa-share-square"></i>
 							<?php echo $skin->msg( 'liberty-share' )->escaped() ?>
-						</button> 
+						</button>
 
 				<?php*/
 				} 
@@ -563,7 +563,6 @@ class LibertyTemplate extends BaseTemplate {
 					<button type="button" class="btn btn-secondary tools-btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 						<span class="caret"></span>
 					</button>
-					<?php } ?>
 					<?php
 					// @codingStandardsIgnoreEnd
 					?>
