@@ -559,11 +559,11 @@ class LibertyTemplate extends BaseTemplate {
 				<?php
 				}
 				// @codingStandardsIgnoreStart 
-					?>
+					?> */
 					<button type="button" class="btn btn-secondary tools-btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 						<span class="caret"></span>
 					</button>
-					<?php } */ ?>
+					<?php } ?>
 					<?php
 					// @codingStandardsIgnoreEnd
 					?>
