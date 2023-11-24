@@ -549,7 +549,7 @@ class LibertyTemplate extends BaseTemplate {
 				}
       
         /* uncomment below to use share button */
-				/*if ( $action == 'view' ) { ?>
+				/* if ( $action == 'view' ) { ?>
 
 						<button type="button" class="btn btn-secondary tools-btn tools-share">
 							<i class="far fa-share-square"></i>
