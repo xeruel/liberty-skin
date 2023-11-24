@@ -549,15 +549,15 @@ class LibertyTemplate extends BaseTemplate {
 				}
       
         /* uncomment below to use share button */
-				if ( $action == 'view' ) { /*?>
+				/*if ( $action == 'view' ) { ?>
 
 						<button type="button" class="btn btn-secondary tools-btn tools-share">
 							<i class="far fa-share-square"></i>
 							<?php echo $skin->msg( 'liberty-share' )->escaped() ?>
 						</button>
 
-				<?php*/
-				} 
+				<?php
+				} */
 				// @codingStandardsIgnoreStart 
 					?>
 					<button type="button" class="btn btn-secondary tools-btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
