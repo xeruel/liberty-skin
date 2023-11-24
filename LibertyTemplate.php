@@ -563,7 +563,7 @@ class LibertyTemplate extends BaseTemplate {
 					<button type="button" class="btn btn-secondary tools-btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 						<span class="caret"></span>
 					</button>
-					
+					<?php } ?>
 					<?php
 					// @codingStandardsIgnoreEnd
 					?>
