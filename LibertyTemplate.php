@@ -894,13 +894,13 @@ class LibertyTemplate extends BaseTemplate {
 		$skin = $this->getSkin();
 		$userName = $skin->getUser()->getName();
 		$userLang = $skin->getLanguage()->mCode;
-		$globalData = ContentHandler::getContentText( $this->getContentOfTitle(
+		$globalData = $this->getContentText( $this->getContentOfTitle(
 			Title::newFromText( 'Liberty-Navbar', NS_MEDIAWIKI )
 		) );
-		$globalLangData = ContentHandler::getContentText( $this->getContentOfTitle(
+		$globalLangData = $this->getContentText( $this->getContentOfTitle(
 			Title::newFromText( 'Liberty-Navbar/' . $userLang, NS_MEDIAWIKI )
 		) );
-		$userData = ContentHandler::getContentText( $this->getContentOfTitle(
+		$userData = $this->getContentText( $this->getContentOfTitle(
 			Title::newFromText( $userName . '/Liberty-Navbar', NS_USER )
 		) );
 		if ( !empty( $userData ) ) {
@@ -935,7 +935,7 @@ class LibertyTemplate extends BaseTemplate {
 				foreach ( $split as $key => $value ) {
 					$valueArr = explode( '=', trim( $value ) );
 					if ( isset( $valueArr[1] ) ) {
-						$newValue = implode( '=', array_slice($valueArr, 1));
+						$newValue = implode( '=', array_slice( $valueArr, 1 ) );
 						$data[$valueArr[0]] = $newValue;
 					} else {
 						$data[$types[$key]] = trim( $value );
@@ -958,7 +958,9 @@ class LibertyTemplate extends BaseTemplate {
 				if ( isset( $data['display'] ) ) {
 					$textObj = $skin->msg( $data['display'] );
 					if ( $textObj->isDisabled() ) {
-						$href = $data['link'];
+						if ( array_key_exists( 'link', $data ) ) {
+							$href = $data['link'];
+						}
 					} else {
 						$text = $textObj->text();
 					}
@@ -967,7 +969,7 @@ class LibertyTemplate extends BaseTemplate {
 				}
 
 				// If icon and text both empty
-				if ( empty( $icon ) && empty( $text ) ) {
+				if ( ( !isset( $icon ) && !isset( $text ) ) || ( empty( $icon ) && empty( $text ) ) ) {
 					continue;
 				}
 
@@ -980,7 +982,9 @@ class LibertyTemplate extends BaseTemplate {
 						$title = $titleObj->text();
 					}
 				} else {
-					$title = $text;
+					if ( isset( $text ) ) {
+						$title = $text;
+					}
 				}
 
 				// Link href
@@ -1012,17 +1016,18 @@ class LibertyTemplate extends BaseTemplate {
 				} else {
 					$classes = [];
 				}
-
+				// @codingStandardsIgnoreStart
 				$item = [
 					'access' => $access,
 					'classes' => $classes,
 					'href' => $href,
-					'icon' => $icon,
-					'text' => $text,
+					'icon' => @$icon,
+					'text' => @$text,
 					'title' => $title,
 					'group' => $group,
 					'right' => $right
 				];
+				// @codingStandardsIgnoreEnd
 				$level2Children = &$item['children'];
 				$headings[] = $item;
 				continue;
@@ -1250,6 +1255,25 @@ class LibertyTemplate extends BaseTemplate {
 			</ins>
 		</div>
 <?php
+	}
+
+	/**
+	 * Helper function for parseNavbar() to not trigger deprecation warnings on MW 1.37+ and to continue
+	 * functioning on MW 1.43+.
+	 *
+	 * @param Content|null $content
+	 * @return string|null Textual form of the content, if available.
+	 */
+	private function getContentText( ?Content $content = null ) {
+		if ( $content === null ) {
+			return '';
+		}
+
+		if ( $content instanceof TextContent ) {
+			return $content->getText();
+		}
+
+		return null;
 	}
 
 	private function getContentOfTitle( Title $title ): ?Content {
