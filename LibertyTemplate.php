@@ -136,7 +136,7 @@ class LibertyTemplate extends BaseTemplate {
 					<?php echo $linkRenderer->makeKnownLink(
 						new TitleValue( NS_SPECIAL, 'Recentchanges' ),
 						// @codingStandardsIgnoreStart
-						new HtmlArmor( '<span class="fas fa-sync"></span><span class="hide-title">' . $skin->msg( 'recentchanges' )->plain() . '</span>' ),
+						new HtmlArmor( '<span class="fas fa-sync"></span><span class="hide-title">' . $skin->msg( 'recentchanges' )->escaped() . '</span>' ),
 						// @codingStandardsIgnoreEnd )
 						[
 							'class' => 'nav-link',
@@ -148,7 +148,7 @@ class LibertyTemplate extends BaseTemplate {
 					<?php echo $linkRenderer->makeKnownLink(
 						new TitleValue( NS_SPECIAL, 'Randompage' ),
 						// @codingStandardsIgnoreStart
-						new HtmlArmor( '<span class="fa fa-random"></span><span class="hide-title">' . $skin->msg( 'randompage' )->plain() . '</span>' ),
+						new HtmlArmor( '<span class="fa fa-random"></span><span class="hide-title">' . $skin->msg( 'randompage' )->escaped() . '</span>' ),
 						// @codingStandardsIgnoreEnd
 						[
 							'class' => 'nav-link',
@@ -314,13 +314,21 @@ class LibertyTemplate extends BaseTemplate {
 						<div class="dropdown-divider view-logout"></div>
 						<a href="<?php echo $personalTools['logout']['links'][0]['href']; ?>" 
 							class="dropdown-item view-logout" 
-							title="<?php echo Linker::titleAttrib( 'pt-logout', 'withaccess' ); ?>">
+							title="<?php
+							// @codingStandardsIgnoreStart
+							echo htmlspecialchars( Linker::titleAttrib( 'pt-logout', 'withaccess' ), ENT_QUOTES )
+							// @codingStandardsIgnoreEnd
+							?>">
 							<?php echo $skin->msg( 'logout' )->escaped(); ?></a>
 					</div>
 				</div>
 				<a href="<?php echo $personalTools['logout']['links'][0]['href']; ?>"
 					class="hide-logout logout-btn" 
-					title="<?php echo Linker::titleAttrib( 'pt-logout', 'withaccess' ); ?>">
+					title="<?php
+					// @codingStandardsIgnoreStart
+					echo htmlspecialchars( Linker::titleAttrib( 'pt-logout', 'withaccess' ), ENT_QUOTES );
+					// @codingStandardsIgnoreEnd
+					?>">
 					<span class="fa fa-sign-out"></span></a>
 			<?php } else { ?>
 				<!-- use this to use Login model function -->
@@ -458,7 +466,7 @@ class LibertyTemplate extends BaseTemplate {
 				<?php echo $linkRenderer->makeKnownLink(
 					SpecialPage::getTitleFor( 'Recentchanges' ),
 					new HtmlArmor( '<span class="label label-info">' .
-						$skin->msg( 'liberty-view-more' )->plain() .
+						$skin->msg( 'liberty-view-more' )->escaped() .
 						'</span>' )
 				); ?>
 			</div>
@@ -492,7 +500,7 @@ class LibertyTemplate extends BaseTemplate {
 					$editIcon = $editable ? '<i class="fa fa-edit"></i> ' : '<i class="fa fa-lock"></i> ';
 					echo $linkRenderer->makeKnownLink(
 						$title,
-						new HtmlArmor( $editIcon . $skin->msg( "edit" )->plain() ),
+						new HtmlArmor( $editIcon . $skin->msg( 'edit' )->escaped() ),
 						[
 							'class' => 'btn btn-secondary tools-btn',
 							'id' => 'ca-edit',
@@ -781,7 +789,7 @@ class LibertyTemplate extends BaseTemplate {
 				] );
 			}
 
-			if ( isset( $content['text'] ) ) {
+			if ( isset( $content['text'] ) && !empty( $content['text'] ) ) {
 				echo Html::rawElement( 'span', [
 					'class' => 'hide-title'
 				], $content['text'] );
@@ -942,13 +950,52 @@ class LibertyTemplate extends BaseTemplate {
 					}
 				}
 
-				// Icon
+				// Initialize item
+				$icon = isset( $data['icon'] ) ? htmlentities( $data['icon'], ENT_QUOTES, 'UTF-8' ) : null;
+				$group = isset( $data['group'] ) ? htmlentities( $data['group'], ENT_QUOTES, 'UTF-8' ) : null;
+				$right = isset( $data['right'] ) ? htmlentities( $data['right'], ENT_QUOTES, 'UTF-8' ) : null;
+
+				// Parse display
+				$text = '';
+				if ( isset( $data['display'] ) ) {
+					$textObj = $skin->msg( $data['display'] );
+					if ( $textObj->isDisabled() ) {
+						$text = htmlentities( $data['display'], ENT_QUOTES, 'UTF-8' );
+					} else {
+						$text = $textObj->text();
+					}
+				}
+
+				// Parse iitle
+				$title = '';
+				if ( isset( $data['title'] ) ) {
+					$titleObj = $skin->msg( $data['title'] );
+					if ( $titleObj->isDisabled() ) {
+						$title = htmlentities( $data['title'], ENT_QUOTES, 'UTF-8' );
+					} else {
+						$title = $titleObj->text();
+					}
+				} else {
+					$title = $text;
+				}
+				$split[0] = substr( $split[0], 1 );
+				foreach ( $split as $key => $value ) {
+					$valueArr = explode( '=', trim( $value ) );
+					if ( isset( $valueArr[1] ) ) {
+						$newValue = implode( '=', array_slice( $valueArr, 1 ) );
+						$data[$valueArr[0]] = $newValue;
+					} else {
+						$data[$types[$key]] = trim( $value );
+					}
+				}
+
+				// Parse Icon
 				$icon = isset( $data['icon'] ) ? htmlentities( $data['icon'], ENT_QUOTES, 'UTF-8' ) : null;
 
-				// Group
+				// Parse Group
 				$group = isset( $data['group'] ) ? htmlentities( $data['group'], ENT_QUOTES, 'UTF-8' ) : null;
 
-				// Right
+				// Parse Right
 				$right = isset( $data['right'] ) ? htmlentities( $data['right'], ENT_QUOTES, 'UTF-8' ) : null;
 
 				// support the usual [[MediaWiki:Sidebar]] syntax of
@@ -958,9 +1005,7 @@ class LibertyTemplate extends BaseTemplate {
 				if ( isset( $data['display'] ) ) {
 					$textObj = $skin->msg( $data['display'] );
 					if ( $textObj->isDisabled() ) {
-						if ( array_key_exists( 'link', $data ) ) {
-							$href = $data['link'];
-						}
+						$text = htmlentities( $data['display'], ENT_QUOTES, 'UTF-8' );
 					} else {
 						$text = $textObj->text();
 					}
@@ -1034,6 +1079,16 @@ class LibertyTemplate extends BaseTemplate {
 			}
 			if ( $line[2] !== '*' ) {
 				// Second level menu
+				// Initialize item
+				$icon = null;
+				$text = null;
+				$title = null;
+				$href = null;
+				$access = null;
+				$classes = [];
+				$group = null;
+				$right = null;
+
 				$data = [];
 				$split = explode( '|', $line );
 				$split[0] = substr( $split[0], 2 );
@@ -1131,6 +1186,16 @@ class LibertyTemplate extends BaseTemplate {
 			}
 			if ( $line[3] !== '*' ) {
 				// Third level menu
+				// Initialize item
+				$icon = null;
+				$text = null;
+				$title = null;
+				$href = null;
+				$access = null;
+				$classes = [];
+				$group = null;
+				$right = null;
+
 				$data = [];
 				$split = explode( '|', $line );
 				$split[0] = substr( $split[0], 3 );
@@ -1181,7 +1246,11 @@ class LibertyTemplate extends BaseTemplate {
 						$title = $titleObj->text();
 					}
 				} else {
-					$title = $text;
+					if ( isset( $text ) ) {
+						$title = $text;
+					} else {
+						$title = '';
+					}
 				}
 
 				// Link href
